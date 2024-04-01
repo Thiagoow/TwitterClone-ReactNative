@@ -29,6 +29,7 @@
         "projectId": "b175296f-7748-4890-85af-d70ac23f51a5"
       }
     },
-    "owner": "thiagoow"
+    "owner": "thiagoow",
+    "plugins": ["expo-font"]
   }
 }

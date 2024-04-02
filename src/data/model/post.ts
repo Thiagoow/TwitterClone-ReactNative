@@ -12,9 +12,9 @@ export interface Post {
   comments?: Comment[]
   likes?: Like[]
   retweets?: Retweet[]
-  likesCount: number
-  commentsCount: number
-  retweetsCount: number
+  likesCount?: number
+  commentsCount?: number
+  retweetsCount?: number
   createdAt: string
   updatedAt: string
 }

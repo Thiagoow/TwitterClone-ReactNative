@@ -1,17 +1,24 @@
+import { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import Icon from 'react-native-vector-icons/FontAwesome6'
 import { colors } from '#theme/colors'
+import { useMainProvider } from '#providers/MainProvider'
 
 export default function SplashScreen() {
+  const { user } = useMainProvider()
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
 
-  function goToApp() {
-    navigation.navigate('App')
-  }
-
-  setTimeout(goToApp, 2000)
+  useEffect(() => {
+    setTimeout(() => {
+      if (user) {
+        navigation.navigate('App')
+      } else {
+        navigation.navigate('Login')
+      }
+    }, 2000)
+  }, [])
 
   return (
     <View style={styles.container}>

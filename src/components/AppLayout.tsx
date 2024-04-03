@@ -28,14 +28,11 @@ export default AppLayout
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.whiteColor
+    flex: 1
   },
   backgroundRadius: {
     width: '100%',
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    backgroundColor: colors.extraLightGreyColor
+    backgroundColor: colors.lightestGrayColor
   },
   fullHeight: {
     flex: 1

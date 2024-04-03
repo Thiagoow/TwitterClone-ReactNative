@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingTop: 30,
     paddingBottom: 14,
-    backgroundColor: colors.whiteColor,
+    backgroundColor: colors.extraLightGreyColor,
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 1

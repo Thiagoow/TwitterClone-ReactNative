@@ -14,17 +14,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import Icon from 'react-native-vector-icons/FontAwesome6'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { colors } from '#theme/colors'
+import { useMainProvider } from '#providers/MainProvider'
 
 type HeaderProps = {
   avatarUrl?: ImageSourcePropType
 } & ViewProps
 
 const Header = ({ avatarUrl, ...rest }: HeaderProps) => {
+  const { isDark, toggleDark } = useMainProvider()
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
-
-  function toggleModal() {
-    console.log('toggleModal')
-  }
 
   function toggleDrawer() {
     navigation.dispatch(DrawerActions.toggleDrawer())
@@ -32,8 +30,14 @@ const Header = ({ avatarUrl, ...rest }: HeaderProps) => {
 
   return useMemo(
     () => (
-      <View style={styles.headerBackground} {...rest}>
-        <StatusBar style="dark" />
+      <View
+        style={[
+          styles.headerBackground,
+          { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+        ]}
+        {...rest}
+      >
+        <StatusBar style={isDark ? 'light' : 'dark'} />
 
         <TouchableOpacity
           onPress={toggleDrawer}
@@ -50,11 +54,11 @@ const Header = ({ avatarUrl, ...rest }: HeaderProps) => {
         <Icon name="twitter" size={25} color={colors.primaryColor} />
 
         <TouchableOpacity
-          onPress={toggleModal}
+          onPress={toggleDark}
           hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
         >
           <MaterialCommunityIcon
-            name="clock-plus-outline"
+            name={isDark ? 'clock-plus' : 'clock-plus-outline'}
             size={34}
             color={colors.lightGreyColor}
           />
@@ -72,7 +76,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingTop: 30,
     paddingBottom: 14,
-    backgroundColor: colors.extraLightGreyColor,
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 1

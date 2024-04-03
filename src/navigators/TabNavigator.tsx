@@ -7,18 +7,31 @@ import HomeScreen from '#screens/HomeScreen'
 import SearchScreen from '#screens/SearchScreen'
 import NotificationsScreen from '#screens/NotificationsScreen'
 import ProfileScreen from '#screens/ProfileScreen'
+import { useMainProvider } from '#providers/MainProvider'
 
 const Tab = createBottomTabNavigator()
 const iconsSize = 25
 
 const TabNavigator = () => {
+  const { isDark } = useMainProvider()
+
+  function getIconColor(focused: boolean) {
+    if (focused) {
+      return isDark ? colors.lightGreyColor : colors.greyColor
+    }
+    return isDark ? colors.greyColor : colors.lightGreyColor
+  }
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
         header: () => <Header />,
-        tabBarStyle: styles.tabBarStyle
+        tabBarStyle: [
+          styles.tabBarStyle,
+          { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+        ]
       }}
     >
       <Tab.Screen
@@ -26,12 +39,7 @@ const TabNavigator = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon
-              name="house"
-              size={iconsSize}
-              solid={focused}
-              color={focused ? colors.greyColor : colors.lightGreyColor}
-            />
+            <Icon name="house" size={iconsSize} solid={focused} color={getIconColor(focused)} />
           )
         }}
       ></Tab.Screen>
@@ -45,7 +53,7 @@ const TabNavigator = () => {
               name="magnifying-glass"
               size={iconsSize}
               solid={focused}
-              color={focused ? colors.greyColor : colors.lightGreyColor}
+              color={getIconColor(focused)}
             />
           )
         }}
@@ -56,12 +64,7 @@ const TabNavigator = () => {
         component={NotificationsScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon
-              name="bell"
-              size={iconsSize}
-              solid={focused}
-              color={focused ? colors.greyColor : colors.lightGreyColor}
-            />
+            <Icon name="bell" size={iconsSize} solid={focused} color={getIconColor(focused)} />
           )
         }}
       ></Tab.Screen>
@@ -71,12 +74,7 @@ const TabNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon
-              name="user"
-              size={iconsSize}
-              solid={focused}
-              color={focused ? colors.greyColor : colors.lightGreyColor}
-            />
+            <Icon name="user" size={iconsSize} solid={focused} color={getIconColor(focused)} />
           )
         }}
       ></Tab.Screen>
@@ -88,7 +86,6 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     height: 58,
     position: 'relative',
-    backgroundColor: colors.extraLightGreyColor,
     borderTopWidth: 0,
     elevation: 0,
     borderTopColor: 'transparent'

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { StyleSheet, View, ScrollView, ScrollViewProps } from 'react-native'
 import { colors } from '#theme/colors'
+import { useMainProvider } from '#providers/MainProvider'
 
 type AppLayoutProps = {
   children: React.ReactNode
@@ -8,11 +9,17 @@ type AppLayoutProps = {
 } & ScrollViewProps
 
 const AppLayout = ({ children, fullHeight, ...rest }: AppLayoutProps) => {
+  const { isDark } = useMainProvider()
+
   return useMemo(
     () => (
       <View style={styles.container}>
         <ScrollView
-          contentContainerStyle={[styles.backgroundRadius, fullHeight ? styles.fullHeight : {}]}
+          contentContainerStyle={[
+            styles.backgroundRadius,
+            fullHeight ? styles.fullHeight : {},
+            { backgroundColor: isDark ? colors.darkTxtColor : colors.lightestGrayColor }
+          ]}
           showsVerticalScrollIndicator={false}
           {...rest}
         >
@@ -20,7 +27,7 @@ const AppLayout = ({ children, fullHeight, ...rest }: AppLayoutProps) => {
         </ScrollView>
       </View>
     ),
-    [children, fullHeight, Object.keys(rest)]
+    [isDark, children, fullHeight, Object.keys(rest)]
   )
 }
 
@@ -31,8 +38,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   backgroundRadius: {
-    width: '100%',
-    backgroundColor: colors.lightestGrayColor
+    width: '100%'
   },
   fullHeight: {
     flex: 1

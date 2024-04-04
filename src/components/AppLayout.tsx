@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, ScrollView, ScrollViewProps } from 'react-native'
 import { colors } from '#theme/colors'
 import { useMainProvider } from '#providers/MainProvider'
@@ -14,6 +15,8 @@ const AppLayout = ({ children, fullHeight, ...rest }: AppLayoutProps) => {
   return useMemo(
     () => (
       <View style={styles.container}>
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+
         <ScrollView
           contentContainerStyle={[
             styles.backgroundRadius,

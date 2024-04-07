@@ -6,6 +6,7 @@ import AppLayout from '#components/AppLayout'
 import Button from '#components/Button'
 import { AuthUseCaseType } from '#useCases/AuthUseCase'
 import { useMainProvider } from '#providers/MainProvider'
+import { useForm } from 'react-hook-form'
 
 interface LoginScreenDependencies {
   useCase: AuthUseCaseType
@@ -13,7 +14,8 @@ interface LoginScreenDependencies {
 
 export default function LoginScreen(props: LoginScreenDependencies) {
   const { isDark } = useMainProvider()
-  const { logIn } = props.useCase
+  const { control, formState, handleSubmit } = useForm({})
+  const { logIn, loading } = props.useCase
 
   return (
     <AppLayout fullHeight>
@@ -42,11 +44,21 @@ export default function LoginScreen(props: LoginScreenDependencies) {
         </View>
 
         <View style={styles.inputsContainer}>
-          <Input label="Email" placeholder="yourname@email.com" />
-          <Input label="Password" placeholder="**************" secureTextEntry />
+          <Input name="email" control={control} label="Email" placeholder="yourname@email.com" />
+          <Input
+            name="password"
+            control={control}
+            label="Password"
+            placeholder="**************"
+            secureTextEntry
+          />
 
           <Button
-            onPress={() => logIn({ email: 'admin@email.com', password: '123456' })}
+            disabled={!formState.isValid || !formState.isDirty}
+            isLoading={loading}
+            onPress={handleSubmit((values) =>
+              logIn({ email: values.email, password: values.password })
+            )}
             marginTop={30}
           >
             Login

@@ -4,10 +4,16 @@ import { colors } from '#theme/colors'
 import Input from '#components/Input'
 import AppLayout from '#components/AppLayout'
 import Button from '#components/Button'
+import { AuthUseCaseType } from '#useCases/AuthUseCase'
 import { useMainProvider } from '#providers/MainProvider'
 
-export default function LoginScreen() {
+interface LoginScreenDependencies {
+  useCase: AuthUseCaseType
+}
+
+export default function LoginScreen(props: LoginScreenDependencies) {
   const { isDark } = useMainProvider()
+  const { logIn } = props.useCase
 
   return (
     <AppLayout fullHeight>
@@ -39,7 +45,10 @@ export default function LoginScreen() {
           <Input label="Email" placeholder="yourname@email.com" />
           <Input label="Password" placeholder="**************" secureTextEntry />
 
-          <Button onPress={() => console.log('login')} marginTop={30}>
+          <Button
+            onPress={() => logIn({ email: 'admin@email.com', password: '123456' })}
+            marginTop={30}
+          >
             Login
           </Button>
         </View>

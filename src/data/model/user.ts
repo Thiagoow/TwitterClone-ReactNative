@@ -4,6 +4,7 @@ import { File } from '#model/file'
 export interface User {
   id: number
   token?: string
+  tokenExpiresAt?: string
   username: string
   fullName: string
   email: string

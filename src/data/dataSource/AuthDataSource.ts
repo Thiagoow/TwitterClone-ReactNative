@@ -83,7 +83,7 @@ export default class AuthDataSource {
   }
 
   public validateCode = async (parameters: ValidateCodeParams): Promise<ValidateCodeResponse> => {
-    const url = `${environment.apiBaseUrl}/users/register/${parameters.code}`
+    const url = `${environment.apiBaseUrl}/users/register/${parameters.key}`
 
     return axios.get(url).then((response) => {
       const { data, status } = response
@@ -102,5 +102,32 @@ export default class AuthDataSource {
         message: data?.errors ? data?.errors[0]?.message : 'Error finding user'
       }
     })
+  }
+
+  public updateUser = async (parameters: any) => {
+    const url = `${environment.apiBaseUrl}/users/register`
+    const body = JSON.stringify(parameters)
+
+    return axios
+      .put(url, body, {
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+      .then((response) => {
+        const { data, status } = response
+
+        if (status === 200) {
+          return {
+            success: true,
+            message: 'Success'
+          }
+        }
+
+        return {
+          success: false,
+          message: data?.errors ? data?.errors[0]?.message : 'Error updating user'
+        }
+      })
   }
 }

@@ -20,7 +20,7 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
 
   function goToRegistration() {
-    navigation.navigate('Registration')
+    navigation.reset({ index: 0, routes: [{ name: 'Registration' }] })
   }
 
   async function logIn(parameters: LogInParams) {
@@ -54,7 +54,7 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
 
   async function validateCode(parameters: ValidateCodeParams) {
     setLoading(true)
-    const { success, message, user } = await source.validateCode(parameters)
+    const { success, message } = await source.validateCode(parameters)
 
     if (!success) {
       setLoading(false)
@@ -67,7 +67,17 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
   }
 
   async function updateUser(parameters: UpdateUserParams) {
-    console.log(parameters)
+    setLoading(true)
+    const { success, message } = await source.updateUser(parameters)
+
+    if (!success) {
+      setLoading(false)
+      console.error(message)
+      return
+    }
+
+    setLoading(false)
+    navigation.navigate('Login')
   }
 
   return {

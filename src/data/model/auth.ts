@@ -22,7 +22,7 @@ export interface SignUpResponse {
 }
 
 export interface ValidateCodeParams {
-  code: string
+  key: string
 }
 
 export interface ValidateCodeResponse {
@@ -32,6 +32,8 @@ export interface ValidateCodeResponse {
 }
 
 export interface UpdateUserParams {
+  fullName?: User['fullName']
+  key: ValidateCodeParams['key']
   password: string
   passwordConfirmation: string
 }

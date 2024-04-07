@@ -21,19 +21,19 @@ interface RegistrationScreenDependencies {
 export default function RegistrationScreen({ route, useCase }: RegistrationScreenDependencies) {
   const { step } = route?.params || { step: 'signUp' }
   const { isDark } = useMainProvider()
-  const { control, formState, handleSubmit } = useForm({})
+  const { control, formState, handleSubmit, resetField } = useForm({})
   const { signUp, validateCode, updateUser, loading } = useCase
 
-  function getTitle(step: Step) {
+  function getIconName(step: Step) {
     switch (step) {
       case 'signUp':
-        return 'Create a new Account'
-      case 'code':
-        return 'Enter Confirmation Code'
-      case 'password':
-        return 'Set Your Password'
       default:
-        return 'Create a new Account'
+        return 'at'
+      case 'code':
+        return 'circle-user'
+      case 'password':
+      case 'resetPassword':
+        return 'lock'
     }
   }
 
@@ -44,20 +44,8 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
         return 'Please type your e-mail and we’ll send you a code'
       case 'code':
         return 'Please type the confirmation code to make your sign up'
-      case 'password':
+      case 'resetPassword':
         return 'Set a password for your account'
-    }
-  }
-
-  function getIconName(step: Step) {
-    switch (step) {
-      case 'signUp':
-      default:
-        return 'at'
-      case 'code':
-        return 'circle-user'
-      case 'password':
-        return 'lock'
     }
   }
 
@@ -66,12 +54,22 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
       case 'signUp':
       default:
         signUp({ email: values.email })
+        resetField('email')
         break
       case 'code':
-        validateCode({ code: values.code })
+        validateCode({ key: values.code })
         break
       case 'password':
         updateUser({
+          key: values.code,
+          fullName: values.fullName,
+          password: values.password,
+          passwordConfirmation: values.passwordConfirmation
+        })
+        break
+      case 'resetPassword':
+        updateUser({
+          key: values.code,
           password: values.password,
           passwordConfirmation: values.passwordConfirmation
         })
@@ -85,7 +83,7 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
         <Text
           style={[styles.title, { color: isDark ? colors.lightestGrayColor : colors.darkTxtColor }]}
         >
-          {getTitle(step)}
+          {step === 'resetPassword' ? 'Create a new Password' : 'Create a new Account'}
         </Text>
 
         <View>
@@ -97,22 +95,31 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
           >
             <Icon
               name={getIconName(step)}
-              solid={step === 'password'}
+              solid={step === 'password' || step === 'resetPassword'}
               size={92}
               color={colors.primaryColor}
             />
           </View>
 
-          <Text
-            style={[styles.subtitle, { color: isDark ? colors.lightGreyColor : colors.greyColor }]}
-          >
-            {getSubtitle(step)}
-          </Text>
+          {step === 'password' ? null : (
+            <Text
+              style={[
+                styles.subtitle,
+                { color: isDark ? colors.lightGreyColor : colors.greyColor }
+              ]}
+            >
+              {getSubtitle(step)}
+            </Text>
+          )}
         </View>
 
         <View style={styles.inputsContainer}>
-          {step === 'password' ? (
+          {step === 'password' || step === 'resetPassword' ? (
             <>
+              {step === 'resetPassword' ? null : (
+                <Input name="fullName" control={control} label="Full Name" placeholder="John Doe" />
+              )}
+
               <Input
                 name="password"
                 control={control}
@@ -120,6 +127,7 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
                 placeholder="**************"
                 secureTextEntry
               />
+
               <Input
                 name="passwordConfirmation"
                 control={control}

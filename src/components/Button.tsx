@@ -10,14 +10,20 @@ type ButtonProps = {
   isLoading?: boolean
 } & TouchableOpacityProps
 
-const Button = ({ children, marginTop, isLoading = false, ...rest }: ButtonProps) => {
+const Button = ({ children, marginTop, isLoading = false, disabled, ...rest }: ButtonProps) => {
   const { isDark } = useMainProvider()
 
   return useMemo(() => {
     return (
       <TouchableOpacity
         {...{
-          style: [styles.button, styles.primaryVariant, { marginTop }]
+          disabled: isLoading || disabled,
+          style: [
+            styles.button,
+            styles.primaryVariant,
+            { marginTop },
+            { opacity: disabled ? 0.5 : 1 }
+          ]
         }}
         {...rest}
       >
@@ -30,7 +36,7 @@ const Button = ({ children, marginTop, isLoading = false, ...rest }: ButtonProps
         {isLoading ? <Spinner /> : null}
       </TouchableOpacity>
     )
-  }, [isDark, children, marginTop, isLoading, Object.keys(rest)])
+  }, [isDark, children, marginTop, isLoading, disabled, Object.keys(rest)])
 }
 
 const styles = StyleSheet.create({

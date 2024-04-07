@@ -26,7 +26,7 @@ const Button = ({
       case 'primary':
         return styles.primaryVariant
       case 'secondary':
-        return styles.secondaryVariant
+        return isDark ? styles.darkSecondaryVariant : styles.secondaryVariant
       default:
         return styles.primaryVariant
     }
@@ -71,6 +71,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryColor
   },
   secondaryVariant: {
+    color: colors.darkTxtColor,
+    backgroundColor: colors.lightGreyColor
+  },
+  darkSecondaryVariant: {
     color: colors.darkTxtColor,
     backgroundColor: colors.whiteColor
   }

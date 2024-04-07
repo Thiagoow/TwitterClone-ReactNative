@@ -13,9 +13,9 @@ export default function SplashScreen() {
 
   useEffect(() => {
     if (user) {
-      navigation.navigate('App')
+      navigation.reset({ index: 0, routes: [{ name: 'App' }] })
     } else {
-      navigation.navigate('Login')
+      navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
     }
   }, [user])
 

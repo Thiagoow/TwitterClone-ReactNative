@@ -7,27 +7,14 @@ import { useMainProvider } from '#providers/MainProvider'
 
 export interface AuthUseCaseType {
   loading: boolean
-  getUserInfo: () => void
   logIn: (parameters: LogInParams) => void
+  getUserInfo: () => void
 }
 
 export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
   const { user, setUser } = useMainProvider()
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
-
-  async function getUserInfo() {
-    setLoading(true)
-    const data = await source.GetUserInfo()
-
-    if (!data) {
-      setLoading(false)
-      return
-    }
-
-    setUser(data)
-    setLoading(false)
-  }
 
   async function logIn(parameters: LogInParams) {
     setLoading(true)
@@ -44,9 +31,23 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
     navigation.navigate('App')
   }
 
+  async function getUserInfo() {
+    setLoading(true)
+    const { success, message, user } = await source.GetUserInfo()
+
+    if (!success) {
+      setLoading(false)
+      console.error(message)
+      return
+    }
+
+    setUser(user)
+    setLoading(false)
+  }
+
   return {
     loading,
-    getUserInfo,
-    logIn
+    logIn,
+    getUserInfo
   }
 }

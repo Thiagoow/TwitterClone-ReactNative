@@ -27,8 +27,7 @@ export default class AuthDataSource {
       .post(url, body, {
         headers: {
           'content-type': 'application/json'
-        },
-        timeout: 2000
+        }
       })
       .then((response) => {
         const { data, status } = response

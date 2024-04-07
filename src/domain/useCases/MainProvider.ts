@@ -30,7 +30,7 @@ function MainProviderUseCase(): MainProviderUseCase {
     }
   }
 
-  async function saveUser() {
+  async function saveUser(user: User) {
     try {
       await AsyncStorage.setItem('user', JSON.stringify(user))
     } catch (error) {
@@ -46,7 +46,7 @@ function MainProviderUseCase(): MainProviderUseCase {
     user,
     setUser: async (user: User) => {
       setUser(user)
-      await saveUser()
+      await saveUser(user)
     },
     isDark,
     toggleDark

@@ -2,6 +2,22 @@ import axios from 'axios'
 import { LogInParams, LogInResponse, GetUserInfoResponse } from '#model/auth'
 import environment from '#config/enviroment'
 
+// Handle response even with non-2XX status codes
+axios.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.response) {
+      return Promise.resolve({
+        data: error.response.data,
+        status: error.response.status
+      })
+    }
+    return Promise.reject(error)
+  }
+)
+
 export default class AuthDataSource {
   public logIn = async (parameters: LogInParams): Promise<LogInResponse> => {
     const url = `${environment.apiBaseUrl}/auth`
@@ -31,37 +47,27 @@ export default class AuthDataSource {
           message: data?.errors ? data?.errors[0]?.message : 'Error logging user'
         }
       })
-      .catch((error) => {
-        console.error(error)
-        throw new Error(error)
-      })
   }
 
   public GetUserInfo = async (): Promise<GetUserInfoResponse> => {
     const url = `${environment.apiBaseUrl}/users`
 
-    return axios
-      .get(url)
-      .then((response) => {
-        const { data, status } = response
+    return axios.get(url).then((response) => {
+      const { data, status } = response
 
-        if (status === 200) {
-          return {
-            user: data,
-            success: true,
-            message: 'Success'
-          }
-        }
-
+      if (status === 200) {
         return {
-          user: null,
-          success: false,
-          message: data?.errors ? data?.errors[0]?.message : 'Error finding user'
+          user: data,
+          success: true,
+          message: 'Success'
         }
-      })
-      .catch((error) => {
-        console.error(error)
-        throw new Error(error)
-      })
+      }
+
+      return {
+        user: null,
+        success: false,
+        message: data?.errors ? data?.errors[0]?.message : 'Error finding user'
+      }
+    })
   }
 }

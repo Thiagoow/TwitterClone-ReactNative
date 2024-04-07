@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { User } from '#model/user'
 import { useColorScheme } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export interface MainProviderUseCase {
   user: User | null
@@ -18,9 +19,35 @@ function MainProviderUseCase(): MainProviderUseCase {
     setIsDark(!isDark)
   }
 
+  async function loadUser() {
+    try {
+      const storedUser = await AsyncStorage.getItem('user')
+      if (storedUser) {
+        setUser(JSON.parse(storedUser))
+      }
+    } catch (error) {
+      console.error('Error loading user from AsyncStorage:', error)
+    }
+  }
+
+  async function saveUser() {
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(user))
+    } catch (error) {
+      console.error('Error saving user to AsyncStorage:', error)
+    }
+  }
+
+  useEffect(() => {
+    loadUser()
+  }, [])
+
   return {
     user,
-    setUser,
+    setUser: async (user: User) => {
+      setUser(user)
+      await saveUser()
+    },
     isDark,
     toggleDark
   }

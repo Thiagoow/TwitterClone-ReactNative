@@ -5,30 +5,44 @@ import { colors } from '#theme/colors'
 import Spinner from '#components/Spinner'
 
 type ButtonProps = {
+  variant?: 'primary' | 'secondary'
   children: string | React.ReactNode
   marginTop?: number
   isLoading?: boolean
 } & TouchableOpacityProps
 
-const Button = ({ children, marginTop, isLoading = false, disabled, ...rest }: ButtonProps) => {
+const Button = ({
+  variant = 'primary',
+  children,
+  marginTop,
+  isLoading = false,
+  disabled,
+  ...rest
+}: ButtonProps) => {
   const { isDark } = useMainProvider()
+
+  function getVariantStyle() {
+    switch (variant) {
+      case 'primary':
+        return styles.primaryVariant
+      case 'secondary':
+        return styles.secondaryVariant
+      default:
+        return styles.primaryVariant
+    }
+  }
 
   return useMemo(() => {
     return (
       <TouchableOpacity
         {...{
           disabled: isLoading || disabled,
-          style: [
-            styles.button,
-            styles.primaryVariant,
-            { marginTop },
-            { opacity: disabled ? 0.5 : 1 }
-          ]
+          style: [styles.button, getVariantStyle(), { marginTop }, { opacity: disabled ? 0.5 : 1 }]
         }}
         {...rest}
       >
         {typeof children === 'string' ? (
-          <Text style={[styles.buttonText, styles.primaryVariant]}>{children}</Text>
+          <Text style={[styles.buttonText, getVariantStyle()]}>{children}</Text>
         ) : (
           children
         )}
@@ -36,7 +50,7 @@ const Button = ({ children, marginTop, isLoading = false, disabled, ...rest }: B
         {isLoading ? <Spinner /> : null}
       </TouchableOpacity>
     )
-  }, [isDark, children, marginTop, isLoading, disabled, Object.keys(rest)])
+  }, [isDark, variant, children, marginTop, isLoading, disabled, variant, Object.keys(rest)])
 }
 
 const styles = StyleSheet.create({
@@ -55,6 +69,10 @@ const styles = StyleSheet.create({
   primaryVariant: {
     color: colors.whiteColor,
     backgroundColor: colors.primaryColor
+  },
+  secondaryVariant: {
+    color: colors.darkTxtColor,
+    backgroundColor: colors.whiteColor
   }
 })
 

@@ -12,14 +12,12 @@ export default function SplashScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
 
   useEffect(() => {
-    setTimeout(() => {
-      if (user) {
-        navigation.navigate('App')
-      } else {
-        navigation.navigate('Login')
-      }
-    }, 2000)
-  }, [])
+    if (user) {
+      navigation.navigate('App')
+    } else {
+      navigation.navigate('Login')
+    }
+  }, [user])
 
   return (
     <View style={styles.container}>
@@ -33,7 +31,7 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    rowGap: 220,
+    rowGap: 160,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.primaryColor

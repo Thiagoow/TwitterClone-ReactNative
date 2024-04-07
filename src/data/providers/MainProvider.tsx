@@ -14,13 +14,14 @@ export function useMainProvider() {
 
 export default (props: MainProviderProps) => {
   const { children, useCase } = props
-  const { user, isDark, toggleDark } = useCase
+  const { user, setUser, isDark, toggleDark } = useCase
 
   return useMemo(
     () => (
       <MainProviderContext.Provider
         value={{
           user,
+          setUser,
           isDark,
           toggleDark
         }}
@@ -28,6 +29,6 @@ export default (props: MainProviderProps) => {
         {children}
       </MainProviderContext.Provider>
     ),
-    [children, user, isDark, toggleDark]
+    [children, user, setUser, isDark, toggleDark]
   )
 }

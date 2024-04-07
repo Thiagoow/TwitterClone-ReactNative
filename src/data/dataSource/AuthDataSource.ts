@@ -6,7 +6,6 @@ export default class AuthDataSource {
   public logIn = async (parameters: LogInParams): Promise<LogInResponse> => {
     const url = `${environment.apiBaseUrl}/auth`
     const body = JSON.stringify(parameters)
-    console.log(body)
 
     return axios
       .post(url, body, {
@@ -16,7 +15,6 @@ export default class AuthDataSource {
         timeout: 2000
       })
       .then((response) => {
-        console.log(response)
         const { data, status } = response
 
         if (status === 200) {

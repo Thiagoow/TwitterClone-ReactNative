@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { LogInParams } from '#model/auth'
 import AuthDataSource from '#dataSource/AuthDataSource'
 import { useMainProvider } from '#providers/MainProvider'
@@ -39,10 +39,6 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
     setLoading(false)
     setUser({ ...user, token })
   }
-
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
   return {
     loading,

@@ -5,16 +5,17 @@ import { colors } from '#theme/colors'
 
 type SpinnerProps = {
   size?: number
+  duration?: number
 } & ViewProps
 
-const Spinner = ({ size = 16, ...rest }: SpinnerProps) => {
+const Spinner = ({ size = 16, duration = 800, ...rest }: SpinnerProps) => {
   const spinValue = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     Animated.loop(
       Animated.timing(spinValue, {
         toValue: 1,
-        duration: 1000,
+        duration,
         easing: Easing.linear,
         useNativeDriver: true
       })
@@ -32,7 +33,7 @@ const Spinner = ({ size = 16, ...rest }: SpinnerProps) => {
         <Icon {...{ name: 'spinner', size, color: colors.lightestGrayColor }} />
       </Animated.View>
     ),
-    [size, rest, spin]
+    [spin, size, duration, rest]
   )
 }
 

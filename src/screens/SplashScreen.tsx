@@ -12,11 +12,13 @@ export default function SplashScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
 
   useEffect(() => {
-    if (user) {
-      navigation.reset({ index: 0, routes: [{ name: 'App' }] })
-    } else {
-      navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
-    }
+    setTimeout(() => {
+      if (user) {
+        navigation.reset({ index: 0, routes: [{ name: 'App' }] })
+      } else {
+        navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
+      }
+    }, 500)
   }, [user])
 
   return (

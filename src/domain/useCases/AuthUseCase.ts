@@ -1,20 +1,27 @@
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { LogInParams } from '#model/auth'
+import { LogInParams, SignUpParams, UpdateUserParams, ValidateCodeParams } from '#model/auth'
 import AuthDataSource from '#dataSource/AuthDataSource'
 import { useMainProvider } from '#providers/MainProvider'
 
 export interface AuthUseCaseType {
   loading: boolean
+  goToRegistration: () => void
   logIn: (parameters: LogInParams) => void
-  getUserInfo: () => void
+  signUp: (parameters: SignUpParams) => void
+  updateUser: (parameters: UpdateUserParams) => void
+  validateCode: (parameters: ValidateCodeParams) => void
 }
 
 export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
   const { user, setUser } = useMainProvider()
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
+
+  function goToRegistration() {
+    navigation.navigate('Registration')
+  }
 
   async function logIn(parameters: LogInParams) {
     setLoading(true)
@@ -31,9 +38,9 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
     navigation.navigate('App')
   }
 
-  async function getUserInfo() {
+  async function signUp(parameters: SignUpParams) {
     setLoading(true)
-    const { success, message, user } = await source.GetUserInfo()
+    const { success, message } = await source.signUp(parameters)
 
     if (!success) {
       setLoading(false)
@@ -41,13 +48,34 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
       return
     }
 
-    setUser(user)
     setLoading(false)
+    navigation.navigate('Registration', { step: 'code' })
+  }
+
+  async function validateCode(parameters: ValidateCodeParams) {
+    setLoading(true)
+    const { success, message, user } = await source.validateCode(parameters)
+
+    if (!success) {
+      setLoading(false)
+      console.error(message)
+      return
+    }
+
+    setLoading(false)
+    navigation.navigate('Registration', { step: 'password' })
+  }
+
+  async function updateUser(parameters: UpdateUserParams) {
+    console.log(parameters)
   }
 
   return {
     loading,
+    goToRegistration,
     logIn,
-    getUserInfo
+    signUp,
+    updateUser,
+    validateCode
   }
 }

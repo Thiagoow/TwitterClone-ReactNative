@@ -15,7 +15,7 @@ interface LoginScreenDependencies {
 export default function LoginScreen(props: LoginScreenDependencies) {
   const { isDark } = useMainProvider()
   const { control, formState, handleSubmit } = useForm({})
-  const { logIn, loading } = props.useCase
+  const { logIn, loading, goToRegistration } = props.useCase
 
   return (
     <AppLayout fullHeight>
@@ -59,9 +59,13 @@ export default function LoginScreen(props: LoginScreenDependencies) {
             onPress={handleSubmit((values) =>
               logIn({ email: values.email, password: values.password })
             )}
-            marginTop={30}
+            marginTop={15}
           >
             Login
+          </Button>
+
+          <Button variant="secondary" onPress={goToRegistration}>
+            Sign Up
           </Button>
         </View>
       </View>

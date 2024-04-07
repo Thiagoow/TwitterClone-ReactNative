@@ -1,5 +1,12 @@
 import axios from 'axios'
-import { LogInParams, LogInResponse, GetUserInfoResponse } from '#model/auth'
+import {
+  LogInParams,
+  LogInResponse,
+  SignUpParams,
+  SignUpResponse,
+  ValidateCodeParams,
+  ValidateCodeResponse
+} from '#model/auth'
 import environment from '#config/enviroment'
 
 // Handle response even with non-2XX status codes
@@ -48,8 +55,35 @@ export default class AuthDataSource {
       })
   }
 
-  public GetUserInfo = async (): Promise<GetUserInfoResponse> => {
-    const url = `${environment.apiBaseUrl}/users`
+  public signUp = async (parameters: SignUpParams): Promise<SignUpResponse> => {
+    const url = `${environment.apiBaseUrl}/users/register`
+    const body = JSON.stringify(parameters)
+
+    return axios
+      .post(url, body, {
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+      .then((response) => {
+        const { data, status } = response
+
+        if (status === 200) {
+          return {
+            success: true,
+            message: 'Success'
+          }
+        }
+
+        return {
+          success: false,
+          message: data?.errors ? data?.errors[0]?.message : 'Error creating user'
+        }
+      })
+  }
+
+  public validateCode = async (parameters: ValidateCodeParams): Promise<ValidateCodeResponse> => {
+    const url = `${environment.apiBaseUrl}/users/register/${parameters.code}`
 
     return axios.get(url).then((response) => {
       const { data, status } = response

@@ -4,6 +4,7 @@ import MainProviderUseCase from '#useCases/MainProvider'
 import TabNavigator from '#navigators/StackNavigator'
 import SplashScreen from '#screens/SplashScreen'
 import LoginFactory from '#factories/LoginFactory'
+import RegistrationFactory from '#factories/RegistrationFactory'
 
 const Drawer = createDrawerNavigator()
 
@@ -13,6 +14,7 @@ const DrawerNavigator = () => {
       <Drawer.Navigator screenOptions={{ headerShown: false }}>
         <Drawer.Screen name="SplashScreen" component={SplashScreen} />
         <Drawer.Screen name="Login" component={LoginFactory} />
+        <Drawer.Screen name="Registration" component={RegistrationFactory} />
         <Drawer.Screen name="App" component={TabNavigator} />
       </Drawer.Navigator>
     </MainProvider>

@@ -2,13 +2,15 @@ import React, { useMemo } from 'react'
 import { TouchableOpacity, TouchableOpacityProps, Text, StyleSheet } from 'react-native'
 import { useMainProvider } from '#providers/MainProvider'
 import { colors } from '#theme/colors'
+import Spinner from '#components/Spinner'
 
 type ButtonProps = {
   children: string | React.ReactNode
   marginTop?: number
+  isLoading?: boolean
 } & TouchableOpacityProps
 
-const Button = ({ children, marginTop, ...rest }: ButtonProps) => {
+const Button = ({ children, marginTop, isLoading = false, ...rest }: ButtonProps) => {
   const { isDark } = useMainProvider()
 
   return useMemo(() => {
@@ -24,16 +26,21 @@ const Button = ({ children, marginTop, ...rest }: ButtonProps) => {
         ) : (
           children
         )}
+
+        {isLoading ? <Spinner /> : null}
       </TouchableOpacity>
     )
-  }, [isDark, children, marginTop, Object.keys(rest)])
+  }, [isDark, children, marginTop, isLoading, Object.keys(rest)])
 }
 
 const styles = StyleSheet.create({
   button: {
     padding: 16,
+    columnGap: 10,
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   buttonText: {
     fontSize: 13,

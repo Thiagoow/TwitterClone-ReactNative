@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { RouteProp } from '@react-navigation/native'
 import { NavigationRouteParams, Step } from '#model/routeParams'
 
-type RegistrationRouteProp = RouteProp<NavigationRouteParams, 'Registration'>
+export type RegistrationRouteProp = RouteProp<NavigationRouteParams, 'Registration'>
 
 interface RegistrationScreenDependencies {
   useCase: AuthUseCaseType

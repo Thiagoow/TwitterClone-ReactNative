@@ -26,51 +26,46 @@ export default function LoginScreen(props: LoginScreenDependencies) {
           Log in to your Account
         </Text>
 
-        <View>
-          <View
-            style={[
-              styles.logoIcon,
-              { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
-            ]}
-          >
-            <Icon name="twitter" size={92} color={colors.primaryColor} />
-          </View>
-
-          <Text
-            style={[styles.subtitle, { color: isDark ? colors.lightGreyColor : colors.greyColor }]}
-          >
-            And start tweeting now
-          </Text>
+        <View
+          style={[
+            styles.logoIcon,
+            { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+          ]}
+        >
+          <Icon name="twitter" size={92} color={colors.primaryColor} />
         </View>
 
-        <View style={styles.inputsContainer}>
-          <Input name="email" control={control} label="Email" placeholder="yourname@email.com" />
-          <Input
-            name="password"
-            control={control}
-            label="Password"
-            placeholder="**************"
-            secureTextEntry
-          />
+        <View>
+          <View style={styles.inputsContainer}>
+            <Input name="email" control={control} label="Email" placeholder="yourname@email.com" />
+            <Input
+              name="password"
+              control={control}
+              label="Password"
+              placeholder="**************"
+              secureTextEntry
+            />
+          </View>
 
-          <Button
-            disabled={!formState.isValid || !formState.isDirty}
-            isLoading={loading}
-            onPress={handleSubmit((values) =>
-              logIn({ email: values.email, password: values.password })
-            )}
-            marginTop={15}
-          >
-            Login
-          </Button>
+          <View style={styles.btnsContainer}>
+            <Button
+              disabled={!formState.isValid || !formState.isDirty}
+              isLoading={loading}
+              onPress={handleSubmit((values) =>
+                logIn({ email: values.email, password: values.password })
+              )}
+            >
+              Login
+            </Button>
 
-          <Button variant="secondary" onPress={() => goToRegistration()}>
-            Sign Up
-          </Button>
+            <Button marginTop={20} variant="secondary" onPress={() => goToRegistration()}>
+              Sign Up
+            </Button>
 
-          <Button variant="text" onPress={() => goToRegistration(true)}>
-            Forgot my Password
-          </Button>
+            <Button variant="text" onPress={() => goToRegistration(true)}>
+              Forgot my Password
+            </Button>
+          </View>
         </View>
       </View>
     </AppLayout>
@@ -96,15 +91,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Inter_600SemiBold'
   },
-  subtitle: {
-    fontSize: 14,
-    marginTop: 25,
-    alignSelf: 'center',
-    fontFamily: 'Inter_400Regular'
-  },
   inputsContainer: {
     rowGap: 20,
-    marginBottom: 42,
+    marginBottom: 30,
+    paddingHorizontal: 32
+  },
+  btnsContainer: {
+    marginBottom: 22,
     paddingHorizontal: 32
   }
 })

@@ -55,8 +55,11 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
   function onSubmit(values: any, step: Step) {
     switch (step) {
       case 'signUp':
+        signUp(false, { email: values.email })
+        resetField('email')
+        break
       case 'forgotPassword':
-        signUp(step === 'signUp' || step === 'forgotPassword', { email: values.email })
+        signUp(true, { email: values.email })
         resetField('email')
         break
       case 'code':
@@ -177,8 +180,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   logoIcon: {
-    width: 176,
-    height: 176,
+    width: 156,
+    height: 156,
     borderRadius: 100,
     alignSelf: 'center',
     alignItems: 'center',

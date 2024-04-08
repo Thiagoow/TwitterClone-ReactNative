@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form'
 import { RouteProp } from '@react-navigation/native'
 import { NavigationRouteParams, Step } from '#model/routeParams'
 
-export type RegistrationRouteProp = RouteProp<NavigationRouteParams, 'Registration'>
+type RegistrationRouteProp = RouteProp<NavigationRouteParams, 'Registration'>
 
 interface RegistrationScreenDependencies {
   useCase: AuthUseCaseType
@@ -24,57 +24,98 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
   const { control, formState, handleSubmit, resetField } = useForm({})
   const { signUp, validateCode, updateUser, loading } = useCase
 
-  function getIconName(step: Step) {
+  function getTitle(step: Step) {
     switch (step) {
-      case 'signUp':
-      default:
-        return 'at'
-      case 'code':
-        return 'circle-user'
-      case 'password':
+      case 'forgotPassword':
+      case 'passCode':
+        return 'Reset your Password'
       case 'resetPassword':
-        return 'lock'
+        return 'Create a new Password'
+      default:
+        return 'Create a new Account'
     }
   }
 
   function getSubtitle(step: Step) {
     switch (step) {
-      case 'signUp':
-      default:
-        return 'Please type your e-mail and we’ll send you a code'
       case 'code':
         return 'Please type the confirmation code to make your sign up'
       case 'resetPassword':
         return 'Set a password for your account'
+      default:
+        return 'Please type your e-mail and we’ll send you a code'
     }
+  }
+
+  function getIconName(step: Step) {
+    if (step === 'password' || step === 'resetPassword') return 'lock'
+    return step === 'code' || step === 'passCode' ? 'circle-user' : 'at'
   }
 
   function onSubmit(values: any, step: Step) {
     switch (step) {
       case 'signUp':
-      default:
-        signUp({ email: values.email })
+      case 'forgotPassword':
+        signUp(step === 'signUp' || step === 'forgotPassword', { email: values.email })
         resetField('email')
         break
       case 'code':
-        validateCode({ key: values.code })
+        validateCode(false, { key: values.code })
+        break
+      case 'passCode':
+        validateCode(true, { key: values.code })
         break
       case 'password':
-        updateUser({
+        updateUser(false, {
           key: values.code,
           fullName: values.fullName,
           password: values.password,
           passwordConfirmation: values.passwordConfirmation
         })
-        break
       case 'resetPassword':
-        updateUser({
+        updateUser(true, {
           key: values.code,
           password: values.password,
           passwordConfirmation: values.passwordConfirmation
         })
         break
+      default:
+        break
     }
+  }
+
+  function renderInputFields(step: Step) {
+    if (step === 'password' || step === 'resetPassword') {
+      return (
+        <>
+          {step === 'resetPassword' ? null : (
+            <Input name="fullName" control={control} label="Full Name" placeholder="John Doe" />
+          )}
+          <Input
+            name="password"
+            control={control}
+            label="Password"
+            placeholder="**************"
+            secureTextEntry
+          />
+          <Input
+            name="passwordConfirmation"
+            control={control}
+            label="Confirm Password"
+            placeholder="**************"
+            secureTextEntry
+          />
+        </>
+      )
+    }
+    return (
+      <Input
+        name={step === 'code' || step === 'passCode' ? 'code' : 'email'}
+        control={control}
+        label={step === 'code' || step === 'passCode' ? 'Confirmation Code' : 'Email'}
+        placeholder={step === 'code' || step === 'passCode' ? '123456' : 'yourname@email.com'}
+      />
+    )
   }
 
   return (
@@ -83,7 +124,7 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
         <Text
           style={[styles.title, { color: isDark ? colors.lightestGrayColor : colors.darkTxtColor }]}
         >
-          {step === 'resetPassword' ? 'Create a new Password' : 'Create a new Account'}
+          {getTitle(step)}
         </Text>
 
         <View>
@@ -114,42 +155,13 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
         </View>
 
         <View style={styles.inputsContainer}>
-          {step === 'password' || step === 'resetPassword' ? (
-            <>
-              {step === 'resetPassword' ? null : (
-                <Input name="fullName" control={control} label="Full Name" placeholder="John Doe" />
-              )}
-
-              <Input
-                name="password"
-                control={control}
-                label="Password"
-                placeholder="**************"
-                secureTextEntry
-              />
-
-              <Input
-                name="passwordConfirmation"
-                control={control}
-                label="Confirm Password"
-                placeholder="**************"
-                secureTextEntry
-              />
-            </>
-          ) : (
-            <Input
-              name={step === 'code' ? 'code' : 'email'}
-              control={control}
-              label={step === 'code' ? 'Confirmation Code' : 'Email'}
-              placeholder={step === 'code' ? '123456' : 'yourname@email.com'}
-            />
-          )}
+          {renderInputFields(step)}
 
           <Button
-            disabled={!formState.isValid || !formState.isDirty}
-            isLoading={loading}
-            onPress={handleSubmit((values) => onSubmit(values, step))}
             marginTop={30}
+            isLoading={loading}
+            disabled={!formState.isValid || !formState.isDirty}
+            onPress={handleSubmit((values) => onSubmit(values, step))}
           >
             {step === 'password' ? 'Sign Up' : 'Send'}
           </Button>

@@ -4,6 +4,8 @@ import {
   LogInResponse,
   SignUpParams,
   SignUpResponse,
+  UpdateUserParams,
+  UpdateUserResponse,
   ValidateCodeParams,
   ValidateCodeResponse
 } from '#model/auth'
@@ -55,8 +57,10 @@ export default class AuthDataSource {
       })
   }
 
-  public signUp = async (parameters: SignUpParams): Promise<SignUpResponse> => {
-    const url = `${environment.apiBaseUrl}/users/register`
+  public signUp = async (resetPass: boolean, parameters: SignUpParams): Promise<SignUpResponse> => {
+    const url = resetPass
+      ? `${environment.apiBaseUrl}/users/forgot-password`
+      : `${environment.apiBaseUrl}/users/register`
     const body = JSON.stringify(parameters)
 
     return axios
@@ -77,13 +81,18 @@ export default class AuthDataSource {
 
         return {
           success: false,
-          message: data?.errors ? data?.errors[0]?.message : 'Error creating user'
+          message: data?.errors ? data?.errors[0]?.message : 'Error sending code'
         }
       })
   }
 
-  public validateCode = async (parameters: ValidateCodeParams): Promise<ValidateCodeResponse> => {
-    const url = `${environment.apiBaseUrl}/users/register/${parameters.key}`
+  public validateCode = async (
+    resetPass: boolean,
+    parameters: ValidateCodeParams
+  ): Promise<ValidateCodeResponse> => {
+    const url = resetPass
+      ? `${environment.apiBaseUrl}/users/forgot-password/${parameters.key}`
+      : `${environment.apiBaseUrl}/users/register/${parameters.key}`
 
     return axios.get(url).then((response) => {
       const { data, status } = response
@@ -99,13 +108,18 @@ export default class AuthDataSource {
       return {
         user: null,
         success: false,
-        message: data?.errors ? data?.errors[0]?.message : 'Error finding user'
+        message: data?.errors ? data?.errors[0]?.message : 'Error validating code'
       }
     })
   }
 
-  public updateUser = async (parameters: any) => {
-    const url = `${environment.apiBaseUrl}/users/register`
+  public updateUser = async (
+    resetPass: boolean,
+    parameters: UpdateUserParams
+  ): Promise<UpdateUserResponse> => {
+    const url = resetPass
+      ? `${environment.apiBaseUrl}/users/forgot-password`
+      : `${environment.apiBaseUrl}/users/register`
     const body = JSON.stringify(parameters)
 
     return axios

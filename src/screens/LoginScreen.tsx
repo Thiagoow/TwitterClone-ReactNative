@@ -64,8 +64,12 @@ export default function LoginScreen(props: LoginScreenDependencies) {
             Login
           </Button>
 
-          <Button variant="secondary" onPress={goToRegistration}>
+          <Button variant="secondary" onPress={() => goToRegistration()}>
             Sign Up
+          </Button>
+
+          <Button variant="text" onPress={() => goToRegistration(true)}>
+            Forgot my Password
           </Button>
         </View>
       </View>

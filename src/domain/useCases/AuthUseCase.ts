@@ -7,11 +7,11 @@ import { useMainProvider } from '#providers/MainProvider'
 
 export interface AuthUseCaseType {
   loading: boolean
-  goToRegistration: () => void
+  goToRegistration: (resetPass?: boolean) => void
   logIn: (parameters: LogInParams) => void
-  signUp: (parameters: SignUpParams) => void
-  updateUser: (parameters: UpdateUserParams) => void
-  validateCode: (parameters: ValidateCodeParams) => void
+  signUp: (resetPass: boolean, parameters: SignUpParams) => void
+  updateUser: (resetPass: boolean, parameters: UpdateUserParams) => void
+  validateCode: (resetPass: boolean, parameters: ValidateCodeParams) => void
 }
 
 export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
@@ -19,8 +19,11 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
 
-  function goToRegistration() {
-    navigation.reset({ index: 0, routes: [{ name: 'Registration' }] })
+  function goToRegistration(resetPass?: boolean) {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Registration', params: resetPass ? { step: 'forgotPassword' } : {} }]
+    })
   }
 
   async function logIn(parameters: LogInParams) {
@@ -35,12 +38,12 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
 
     setLoading(false)
     setUser(user ? { ...user, token } : { token })
-    navigation.navigate('App')
+    navigation.reset({ index: 0, routes: [{ name: 'App' }] })
   }
 
-  async function signUp(parameters: SignUpParams) {
+  async function signUp(resetPass: boolean, parameters: SignUpParams) {
     setLoading(true)
-    const { success, message } = await source.signUp(parameters)
+    const { success, message } = await source.signUp(resetPass, parameters)
 
     if (!success) {
       setLoading(false)
@@ -49,12 +52,22 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
     }
 
     setLoading(false)
-    navigation.navigate('Registration', { step: 'code' })
+    if (resetPass) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Registration', params: { step: 'passCode' } }]
+      })
+    } else {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Registration', params: { step: 'code' } }]
+      })
+    }
   }
 
-  async function validateCode(parameters: ValidateCodeParams) {
+  async function validateCode(resetPass: boolean, parameters: ValidateCodeParams) {
     setLoading(true)
-    const { success, message } = await source.validateCode(parameters)
+    const { success, message } = await source.validateCode(resetPass, parameters)
 
     if (!success) {
       setLoading(false)
@@ -63,12 +76,16 @@ export default function AuthUseCase(source: AuthDataSource): AuthUseCaseType {
     }
 
     setLoading(false)
-    navigation.navigate('Registration', { step: 'password' })
+    if (resetPass) {
+      navigation.navigate('Registration', { step: 'resetPassword' })
+    } else {
+      navigation.navigate('Registration', { step: 'password' })
+    }
   }
 
-  async function updateUser(parameters: UpdateUserParams) {
+  async function updateUser(resetPass: boolean, parameters: UpdateUserParams) {
     setLoading(true)
-    const { success, message } = await source.updateUser(parameters)
+    const { success, message } = await source.updateUser(resetPass, parameters)
 
     if (!success) {
       setLoading(false)

@@ -1,4 +1,4 @@
-export type Step = 'signUp' | 'code' | 'password' | 'resetPassword'
+export type Step = 'signUp' | 'forgotPassword' | 'code' | 'passCode' | 'password' | 'resetPassword'
 
 export type NavigationRouteParams = {
   Registration: { step: Step }

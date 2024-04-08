@@ -29,7 +29,7 @@ export default function LoginScreen(props: LoginScreenDependencies) {
         <View
           style={[
             styles.logoIcon,
-            { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+            { backgroundColor: isDark ? colors.lessDarkColor : colors.lightestGrayColor }
           ]}
         >
           <Icon name="twitter" size={92} color={colors.primaryColor} />

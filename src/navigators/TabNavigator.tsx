@@ -30,7 +30,7 @@ const TabNavigator = () => {
         header: () => <Header />,
         tabBarStyle: [
           styles.tabBarStyle,
-          { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+          { backgroundColor: isDark ? colors.lessDarkColor : colors.lightestGrayColor }
         ]
       }}
     >

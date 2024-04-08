@@ -131,7 +131,7 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
           <View
             style={[
               styles.logoIcon,
-              { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+              { backgroundColor: isDark ? colors.lessDarkColor : colors.lightestGrayColor }
             ]}
           >
             <Icon

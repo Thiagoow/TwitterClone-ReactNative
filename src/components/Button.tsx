@@ -35,7 +35,7 @@ const Button = ({
       case 'secondary':
         return {
           ...styles.btnStyles,
-          backgroundColor: isDark ? colors.whiteColor : colors.extraLightGreyColor
+          backgroundColor: isDark ? colors.whiteColor : colors.lessDarkColor
         }
       default:
         return {}
@@ -47,7 +47,7 @@ const Button = ({
       case 'primary':
         return { color: colors.whiteColor }
       case 'secondary':
-        return { color: colors.darkTxtColor }
+        return { color: isDark ? colors.darkTxtColor : colors.extraLightGreyColor }
       case 'text':
         return { color: colors.primaryColor, textDecorationLine: 'underline' }
       default:
@@ -80,6 +80,7 @@ const Button = ({
 const styles = StyleSheet.create({
   btnStyles: {
     padding: 16,
+    columnGap: 10,
     borderRadius: 10,
     alignItems: 'center',
     flexDirection: 'row',

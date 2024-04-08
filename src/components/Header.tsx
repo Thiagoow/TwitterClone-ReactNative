@@ -33,7 +33,7 @@ const Header = ({ avatarUrl, ...rest }: HeaderProps) => {
       <View
         style={[
           styles.headerBackground,
-          { backgroundColor: isDark ? colors.lessDarkColor : colors.extraLightGreyColor }
+          { backgroundColor: isDark ? colors.lessDarkColor : colors.lightestGrayColor }
         ]}
         {...rest}
       >

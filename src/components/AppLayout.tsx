@@ -21,7 +21,7 @@ const AppLayout = ({ children, fullHeight, ...rest }: AppLayoutProps) => {
           contentContainerStyle={[
             styles.backgroundRadius,
             fullHeight ? styles.fullHeight : {},
-            { backgroundColor: isDark ? colors.darkTxtColor : colors.whiteColor }
+            { backgroundColor: isDark ? colors.darkTxtColor : colors.extraLightGreyColor }
           ]}
           showsVerticalScrollIndicator={false}
           {...rest}

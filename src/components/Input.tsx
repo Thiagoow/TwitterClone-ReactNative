@@ -53,7 +53,7 @@ const Input = ({
                 editable: !disabled,
                 onChangeText: onChange,
                 selectTextOnFocus: !disabled,
-                placeholderTextColor: isDark ? colors.lightGreyColor : colors.greyColor,
+                placeholderTextColor: isDark ? colors.greyColor : colors.lightGreyColor,
                 style: [
                   styles.textInput,
                   { opacity: disabled ? 0.5 : 1 },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   textInputLight: {
     color: colors.darkTxtColor,
-    backgroundColor: colors.extraLightGreyColor
+    backgroundColor: colors.lightestGrayColor
   },
   textInputDark: {
     color: colors.extraLightGreyColor,

@@ -5,7 +5,7 @@ import { colors } from '#theme/colors'
 import Spinner from '#components/Spinner'
 
 type ButtonProps = {
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'text'
   children: string | React.ReactNode
   marginTop?: number
   isLoading?: boolean
@@ -23,10 +23,10 @@ const Button = ({
 
   function getVariantStyle() {
     switch (variant) {
-      case 'primary':
-        return styles.primaryVariant
       case 'secondary':
         return isDark ? styles.darkSecondaryVariant : styles.secondaryVariant
+      case 'text':
+        return styles.textBtnVariant
       default:
         return styles.primaryVariant
     }
@@ -42,7 +42,9 @@ const Button = ({
         {...rest}
       >
         {typeof children === 'string' ? (
-          <Text style={[styles.buttonText, getVariantStyle()]}>{children}</Text>
+          <Text style={[styles.buttonText, variant === 'text' ? styles.textVariant : {}]}>
+            {children}
+          </Text>
         ) : (
           children
         )}
@@ -50,7 +52,7 @@ const Button = ({
         {isLoading ? <Spinner /> : null}
       </TouchableOpacity>
     )
-  }, [isDark, variant, children, marginTop, isLoading, disabled, variant, Object.keys(rest)])
+  }, [isDark, variant, children, marginTop, isLoading, disabled, Object.keys(rest)])
 }
 
 const styles = StyleSheet.create({
@@ -77,6 +79,13 @@ const styles = StyleSheet.create({
   darkSecondaryVariant: {
     color: colors.darkTxtColor,
     backgroundColor: colors.whiteColor
+  },
+  textBtnVariant: {
+    backgroundColor: 'transparent'
+  },
+  textVariant: {
+    color: colors.primaryColor,
+    textDecorationLine: 'underline'
   }
 })
 

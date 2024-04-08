@@ -36,8 +36,9 @@ export default function LoginScreen(props: LoginScreenDependencies) {
         </View>
 
         <View>
-          <View style={styles.inputsContainer}>
+          <View style={[styles.inputsContainer, styles.horizontalPadding]}>
             <Input name="email" control={control} label="Email" placeholder="yourname@email.com" />
+
             <Input
               name="password"
               control={control}
@@ -47,7 +48,7 @@ export default function LoginScreen(props: LoginScreenDependencies) {
             />
           </View>
 
-          <View style={styles.btnsContainer}>
+          <View style={[styles.btnsContainer, styles.horizontalPadding]}>
             <Button
               disabled={!formState.isValid || !formState.isDirty}
               isLoading={loading}
@@ -58,7 +59,7 @@ export default function LoginScreen(props: LoginScreenDependencies) {
               Login
             </Button>
 
-            <Button marginTop={20} variant="secondary" onPress={() => goToRegistration()}>
+            <Button variant="secondary" onPress={() => goToRegistration()}>
               Sign Up
             </Button>
 
@@ -78,8 +79,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   logoIcon: {
-    width: 176,
-    height: 176,
+    width: 156,
+    height: 156,
     borderRadius: 100,
     alignSelf: 'center',
     alignItems: 'center',
@@ -91,13 +92,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Inter_600SemiBold'
   },
-  inputsContainer: {
-    rowGap: 20,
-    marginBottom: 30,
+  horizontalPadding: {
     paddingHorizontal: 32
   },
+  inputsContainer: {
+    rowGap: 20,
+    marginBottom: 30
+  },
   btnsContainer: {
-    marginBottom: 22,
-    paddingHorizontal: 32
+    rowGap: 20,
+    marginBottom: 22
   }
 })

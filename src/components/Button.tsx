@@ -1,5 +1,12 @@
 import React, { useMemo } from 'react'
-import { TouchableOpacity, TouchableOpacityProps, Text, StyleSheet } from 'react-native'
+import {
+  TouchableOpacity,
+  TouchableOpacityProps,
+  Text,
+  StyleSheet,
+  TextStyle,
+  ViewStyle
+} from 'react-native'
 import { useMainProvider } from '#providers/MainProvider'
 import { colors } from '#theme/colors'
 import Spinner from '#components/Spinner'
@@ -21,14 +28,30 @@ const Button = ({
 }: ButtonProps) => {
   const { isDark } = useMainProvider()
 
-  function getVariantStyle() {
+  function getBtnVariant(): ViewStyle {
     switch (variant) {
+      case 'primary':
+        return { ...styles.btnStyles, backgroundColor: colors.primaryColor }
       case 'secondary':
-        return isDark ? styles.darkSecondaryVariant : styles.secondaryVariant
-      case 'text':
-        return styles.textBtnVariant
+        return {
+          ...styles.btnStyles,
+          backgroundColor: isDark ? colors.whiteColor : colors.extraLightGreyColor
+        }
       default:
-        return styles.primaryVariant
+        return {}
+    }
+  }
+
+  function getTextVariant(): TextStyle {
+    switch (variant) {
+      case 'primary':
+        return { color: colors.whiteColor }
+      case 'secondary':
+        return { color: colors.darkTxtColor }
+      case 'text':
+        return { color: colors.primaryColor, textDecorationLine: 'underline' }
+      default:
+        return {}
     }
   }
 
@@ -36,15 +59,14 @@ const Button = ({
     return (
       <TouchableOpacity
         {...{
+          activeOpacity: 0.6,
           disabled: isLoading || disabled,
-          style: [styles.button, getVariantStyle(), { marginTop }, { opacity: disabled ? 0.5 : 1 }]
+          style: [getBtnVariant(), { marginTop }, { opacity: disabled ? 0.5 : 1 }]
         }}
         {...rest}
       >
         {typeof children === 'string' ? (
-          <Text style={[styles.buttonText, variant === 'text' ? styles.textVariant : {}]}>
-            {children}
-          </Text>
+          <Text style={[styles.txtStyles, getTextVariant()]}>{children}</Text>
         ) : (
           children
         )}
@@ -56,36 +78,17 @@ const Button = ({
 }
 
 const styles = StyleSheet.create({
-  button: {
+  btnStyles: {
     padding: 16,
-    columnGap: 10,
     borderRadius: 10,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center'
   },
-  buttonText: {
+  txtStyles: {
     fontSize: 13,
+    textAlign: 'center',
     fontFamily: 'Inter_600SemiBold'
-  },
-  primaryVariant: {
-    color: colors.whiteColor,
-    backgroundColor: colors.primaryColor
-  },
-  secondaryVariant: {
-    color: colors.darkTxtColor,
-    backgroundColor: colors.lightGreyColor
-  },
-  darkSecondaryVariant: {
-    color: colors.darkTxtColor,
-    backgroundColor: colors.whiteColor
-  },
-  textBtnVariant: {
-    backgroundColor: 'transparent'
-  },
-  textVariant: {
-    color: colors.primaryColor,
-    textDecorationLine: 'underline'
   }
 })
 

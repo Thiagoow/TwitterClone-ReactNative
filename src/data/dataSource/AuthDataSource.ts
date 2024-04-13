@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
   LogInParams,
   LogInResponse,
@@ -10,29 +9,16 @@ import {
   ValidateCodeResponse
 } from '#model/auth'
 import environment from '#config/enviroment'
-
-// Handle response even with non-2XX status codes
-axios.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    if (error.response) {
-      return Promise.resolve({
-        data: error.response.data,
-        status: error.response.status
-      })
-    }
-    return Promise.reject(error)
-  }
-)
+import CustomHttpClient from '#http/customHttpClient'
 
 export default class AuthDataSource {
+  constructor(private readonly httpClient: CustomHttpClient) {}
+
   public logIn = async (parameters: LogInParams): Promise<LogInResponse> => {
     const url = `${environment.apiBaseUrl}/auth`
     const body = JSON.stringify(parameters)
 
-    return axios
+    return this.httpClient
       .post(url, body, {
         headers: {
           'content-type': 'application/json'
@@ -63,7 +49,7 @@ export default class AuthDataSource {
       : `${environment.apiBaseUrl}/users/register`
     const body = JSON.stringify(parameters)
 
-    return axios
+    return this.httpClient
       .post(url, body, {
         headers: {
           'content-type': 'application/json'
@@ -94,7 +80,7 @@ export default class AuthDataSource {
       ? `${environment.apiBaseUrl}/users/forgot-password/${parameters.key}`
       : `${environment.apiBaseUrl}/users/register/${parameters.key}`
 
-    return axios.get(url).then((response) => {
+    return this.httpClient.get(url).then((response) => {
       const { data, status } = response
 
       if (status === 200) {
@@ -122,7 +108,7 @@ export default class AuthDataSource {
       : `${environment.apiBaseUrl}/users/register`
     const body = JSON.stringify(parameters)
 
-    return axios
+    return this.httpClient
       .put(url, body, {
         headers: {
           'content-type': 'application/json'

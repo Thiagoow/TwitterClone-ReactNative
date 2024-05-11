@@ -2,7 +2,7 @@ const development: boolean = !process.env.NODE_ENV || process.env.NODE_ENV === '
 
 let environment = {
   production: false,
-  apiBaseUrl: 'http://10.0.2.2:3333'
+  apiBaseUrl: 'http://34.236.154.4:3333'
 }
 
 if (!development) {

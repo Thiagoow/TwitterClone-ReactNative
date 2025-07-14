@@ -8,7 +8,7 @@
     "paths": {
       "#src/*": ["./src/*"],
       "#assets/*": ["src/assets/*"],
-      "#components*": ["src/components/*"],
+      "#components/*": ["src/components/*"],
       "#factories/*": ["src/core/factories/*"],
       "#dataSource/*": ["src/data/dataSource/*"],
       "#model/*": ["src/data/model/*"],

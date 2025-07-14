@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import Icon from 'react-native-vector-icons/FontAwesome6'
+import { FontAwesome6 } from '@expo/vector-icons'
 import { colors } from '#theme/colors'
 import { useMainProvider } from '#providers/MainProvider'
 import Spinner from '#components/Spinner'
@@ -23,7 +23,7 @@ export default function SplashScreen() {
 
   return (
     <View style={styles.container}>
-      <Icon name="twitter" size={63} color={colors.whiteColor} />
+      <FontAwesome6 name="twitter" size={63} color={colors.whiteColor} />
 
       <Spinner size={46} />
     </View>

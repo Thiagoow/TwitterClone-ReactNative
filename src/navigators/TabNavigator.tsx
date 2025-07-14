@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Icon from 'react-native-vector-icons/FontAwesome6'
+import { FontAwesome6 } from '@expo/vector-icons'
 import { colors } from '#theme/colors'
 import Header from '#components/Header'
 import HomeScreen from '#screens/HomeScreen'
@@ -39,7 +39,7 @@ const TabNavigator = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon name="house" size={iconsSize} solid={focused} color={getIconColor(focused)} />
+            <FontAwesome6 name="house" size={iconsSize} solid={focused} color={getIconColor(focused)} />
           )
         }}
       ></Tab.Screen>
@@ -49,7 +49,7 @@ const TabNavigator = () => {
         component={SearchScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon
+            <FontAwesome6
               name="magnifying-glass"
               size={iconsSize}
               solid={focused}
@@ -64,7 +64,7 @@ const TabNavigator = () => {
         component={NotificationsScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon name="bell" size={iconsSize} solid={focused} color={getIconColor(focused)} />
+            <FontAwesome6 name="bell" size={iconsSize} solid={focused} color={getIconColor(focused)} />
           )
         }}
       ></Tab.Screen>
@@ -74,7 +74,7 @@ const TabNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused }: any) => (
-            <Icon name="user" size={iconsSize} solid={focused} color={getIconColor(focused)} />
+            <FontAwesome6 name="user" size={iconsSize} solid={focused} color={getIconColor(focused)} />
           )
         }}
       ></Tab.Screen>

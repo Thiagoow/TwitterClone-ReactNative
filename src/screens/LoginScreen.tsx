@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome6'
+import { FontAwesome6 } from '@expo/vector-icons'
 import { colors } from '#theme/colors'
 import Input from '#components/Input'
 import AppLayout from '#components/AppLayout'
@@ -32,7 +32,7 @@ export default function LoginScreen(props: LoginScreenDependencies) {
             { backgroundColor: isDark ? colors.lessDarkColor : colors.lightestGrayColor }
           ]}
         >
-          <Icon name="twitter" size={92} color={colors.primaryColor} />
+          <FontAwesome6 name="twitter" size={92} color={colors.primaryColor} />
         </View>
 
         <View>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { StyleSheet, Animated, ViewProps, Easing } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome6'
+import { FontAwesome6 } from '@expo/vector-icons'
 import { colors } from '#theme/colors'
 
 type SpinnerProps = {
@@ -30,7 +30,7 @@ const Spinner = ({ size = 16, duration = 800, ...rest }: SpinnerProps) => {
   return useMemo(
     () => (
       <Animated.View style={[styles.container, { transform: [{ rotate: spin }] }]}>
-        <Icon {...{ name: 'spinner', size, color: colors.lightestGrayColor }} />
+        <FontAwesome6 {...{ name: 'spinner', size, color: colors.lightestGrayColor }} />
       </Animated.View>
     ),
     [spin, size, duration, rest]

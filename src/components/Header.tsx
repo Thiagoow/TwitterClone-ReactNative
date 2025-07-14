@@ -11,8 +11,7 @@ import {
 import { DrawerActions } from '@react-navigation/native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import Icon from 'react-native-vector-icons/FontAwesome6'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons'
 import { colors } from '#theme/colors'
 import { useMainProvider } from '#providers/MainProvider'
 
@@ -47,17 +46,17 @@ const Header = ({ avatarUrl, ...rest }: HeaderProps) => {
           {avatarUrl ? (
             <Image source={avatarUrl} style={styles.profileBtn} />
           ) : (
-            <MaterialCommunityIcon name="account-circle" size={40} color={colors.lightGreyColor} />
+            <MaterialCommunityIcons name="account-circle" size={40} color={colors.lightGreyColor} />
           )}
         </TouchableOpacity>
 
-        <Icon name="twitter" size={25} color={colors.primaryColor} />
+        <FontAwesome6 name="twitter" size={25} color={colors.primaryColor} />
 
         <TouchableOpacity
           onPress={toggleDark}
           hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
         >
-          <MaterialCommunityIcon
+          <MaterialCommunityIcons
             name={isDark ? 'clock-plus' : 'clock-plus-outline'}
             size={34}
             color={colors.lightGreyColor}

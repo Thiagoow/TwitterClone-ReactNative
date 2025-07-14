@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome6'
+import { FontAwesome6 } from '@expo/vector-icons'
 import { colors } from '#theme/colors'
 import Input from '#components/Input'
 import AppLayout from '#components/AppLayout'
@@ -137,7 +137,7 @@ export default function RegistrationScreen({ route, useCase }: RegistrationScree
               { backgroundColor: isDark ? colors.lessDarkColor : colors.lightestGrayColor }
             ]}
           >
-            <Icon
+            <FontAwesome6
               name={getIconName(step)}
               solid={step === 'password' || step === 'resetPassword'}
               size={92}
